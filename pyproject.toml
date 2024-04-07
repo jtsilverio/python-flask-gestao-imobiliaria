@@ -11,7 +11,8 @@ license = { text = "MIT" }
 dynamic = ["version"]
 dependencies = [
     "flask",
-    "python-dotenv"
+    "python-dotenv",
+    "gunicorn"
 ]
 
 [project.optional-dependencies]
