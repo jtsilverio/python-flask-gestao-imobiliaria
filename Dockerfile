@@ -8,8 +8,6 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /code
 WORKDIR /code
 
-RUN apt-get update && apt-get install make
-
 COPY requirements.txt /tmp/requirements.txt
 RUN set -ex && \
    pip install --upgrade pip && \
@@ -20,4 +18,4 @@ COPY . /code
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "main:main"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "main:create_app()"]

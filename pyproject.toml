@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gestao_ambiental"
-description = "Django Gestao Ambiental"
+name = "gestao_imobiliaria"
+description = "Flask Gestao Imobiliaria"
 readme = "README.md"
 requires-python = ">=3.8"
-license = { text = "MIT" }
+license = { text = "GLWT" }
 dynamic = ["version"]
 dependencies = [
     "flask",
