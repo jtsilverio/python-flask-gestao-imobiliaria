@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {{page_title.capitalize()}}
+{% endblock %}
+
+{% block content %}
+  <div class="container justify-content-left w-100 position-relative">
+   <div>
+      <h1>{{page_title.title()}}</h1>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} position-absolute top-0 end-0" style="z-index: 9999;">
+              <button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="alert" aria-label="Close"></button>
+              {% if category == "danger" %}
+                <p>
+                {% for line in message %}
+                    {{line}}{{("<br>" if not loop.last else "") | safe}}
+                {% endfor %}
+                </p>
+              {% else %}
+                {{ message }}
+              {% endif %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  
+    <form action="" method="POST" class="w-50">
+        {{ form.csrf_token }}
+        
+          {% for field in form %}
+              {% if (field.type != "SubmitField") and (field.type != "CSRFTokenField") %}
+                  <div class="form-group">
+                      {{ field.label(class="form-label mb-0 mt-2") }}
+                      {{ field(class="form-control", placeholder=field.label.text) }}
+                  </div>
+              {% endif %}
+          {% endfor %}
+
+          {% for error in form.errors %}
+              <span class="form__error">{{ error }}</span>
+          {% endfor %}
+          
+          <div class="form-group pt-4 mb-5">
+              {{ form.submit(class="btn btn-primary") }}
+          </div>
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var alertElList = [].slice.call(document.querySelectorAll('.alert'))
+      alertElList.forEach(alert => {
+        alert.style.display = 'block';
+        setTimeout(() => {
+          alert.style.display = 'none';
+        }, 5000); // hide after 5 seconds
+      });
+    });
+  </script>
+{% endblock %}

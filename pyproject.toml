@@ -12,7 +12,8 @@ dynamic = ["version"]
 dependencies = [
     "flask",
     "python-dotenv",
-    "gunicorn"
+    "gunicorn",
+    "flask-wtf"
 ]
 
 [project.optional-dependencies]
