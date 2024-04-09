@@ -21,4 +21,7 @@ def create_app():
     with app.app_context():
         from gestao_imobiliaria import views  # noqa
 
+    from gestao_imobiliaria.views.locador import locador
+
+    app.register_blueprint(locador)
     return app
