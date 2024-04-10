@@ -51,26 +51,29 @@ def cadastro():
         db = get_db()
         db.execute(
             """
-            INSERT INTO locador (primeiro_nome, ultimo_nome, email,
-                                ddd, telefone, tipo_logradouro, 
-                                endereco, numero, cep) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO locador (cpf, primeiro_nome, ultimo_nome, email,
+                                ddd, telefone, cep, 
+                                logradouro, complemento, bairro, cidade, uf) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
+                form.cpf.data,
                 form.primeiro_nome.data,
                 form.ultimo_nome.data,
                 form.email.data,
                 form.ddd.data,
                 form.telefone.data,
-                form.tipo_logradouro.data,
-                form.endereco.data,
-                form.numero.data,
                 form.cep.data,
+                form.logradouro.data,
+                form.complemento.data,
+                form.bairro.data,
+                form.cidade.data,
+                form.uf.data,
             ),
         )
         db.commit()
         flash("Cadastro Realizado com Sucesso.", "success")
-        return redirect(url_for("locador_form"))
+        return redirect(url_for("locador.locador_list"))
     else:
         flash_errors(form)
 
@@ -91,48 +94,56 @@ def edit(id: int):
         abort(404, "Locador id {0} doesn't exist.".format(id))
 
     if request.method == "GET":
+        form.cpf.data = locador["cpf"]
         form.primeiro_nome.data = locador["primeiro_nome"]
         form.ultimo_nome.data = locador["ultimo_nome"]
         form.email.data = locador["email"]
         form.ddd.data = locador["ddd"]
         form.telefone.data = locador["telefone"]
-        form.tipo_logradouro.data = locador["tipo_logradouro"]
-        form.endereco.data = locador["endereco"]
-        form.numero.data = locador["numero"]
         form.cep.data = locador["cep"]
+        form.logradouro.data = locador["logradouro"]
+        form.complemento.data = locador["complemento"]  # Add this line
+        form.bairro.data = locador["bairro"]
+        form.cidade.data = locador["cidade"]
+        form.uf.data = locador["uf"]
 
     if form.validate_on_submit():
         db.execute(
             """
             UPDATE locador 
-                SET primeiro_nome = ?,
+            SET cpf = ?,
+                primeiro_nome = ?,
                 ultimo_nome = ?,
                 email = ?,
                 ddd = ?,
                 telefone = ?,
-                tipo_logradouro =
-                ?, 
-                endereco = ?,
-                numero = ?,
-                cep = ?
+                cep = ?,
+                logradouro = ?,
+                complemento = ?,
+                bairro = ?,
+                cidade = ?,
+                uf = ?
             WHERE id = ?
             """,
             (
+                form.cpf.data,
                 form.primeiro_nome.data,
                 form.ultimo_nome.data,
                 form.email.data,
                 form.ddd.data,
                 form.telefone.data,
-                form.tipo_logradouro.data,
-                form.endereco.data,
-                form.numero.data,
                 form.cep.data,
+                form.logradouro.data,
+                form.complemento.data,
+                form.bairro.data,
+                form.cidade.data,
+                form.uf.data,
                 id,
             ),
         )
         db.commit()
         flash("Cadastro Atualizado com Sucesso.", "success")
-        return redirect(url_for("locador_list"))
+        return redirect(url_for("locador.locador_list"))
 
     return render_template("form.html", form=form, page_title="Editar Locador")
 
@@ -143,4 +154,4 @@ def delete(id: int):
     db.execute("DELETE FROM locador WHERE id = ?", (id,))
     db.commit()
     flash("Locador deletado com sucesso.", "success")
-    return redirect(url_for("locador_list"))
+    return redirect(url_for("locador.locador_list"))

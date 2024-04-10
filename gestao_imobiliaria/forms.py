@@ -48,13 +48,16 @@ class ContratoForm(FlaskForm):
 
 
 class LocadorForm(FlaskForm):
+    cpf = StringField("CPF")
     primeiro_nome = StringField("Primeiro Nome")
     ultimo_nome = StringField("Sobrenome")
-    email = StringField("CPF")
+    email = StringField("Email")
     ddd = IntegerField("DDD")
     telefone = StringField("Telefone")
-    tipo_logradouro = StringField("Tipo de Logradouro")
-    endereco = StringField("Endereço")
-    numero = IntegerField("Número")
     cep = StringField("CEP")
+    logradouro = StringField("Logradouro")
+    complemento = StringField("Complemento")
+    bairro = StringField("Bairro")
+    cidade = StringField("Cidade")
+    uf = StringField("UF")
     submit = SubmitField("Salvar")
