@@ -47,7 +47,7 @@ requirements: pip-compile pip-sync
 
 .PHONY: server
 server:
-	gunicorn --bind ":8888" -w 2 "main:create_app()"
+	gunicorn --bind ":8888" -w 1 "main:create_app()"
 
 docker-build:
 	docker build -t gestao-imobiliaria .

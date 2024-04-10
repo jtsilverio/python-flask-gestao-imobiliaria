@@ -31,7 +31,7 @@
   
     <form action="" method="POST" class="w-50">
         {{ form.csrf_token }}
-        
+        {{ form.hidden_tag() }}
           {% for field in form %}
               {% if (field.type != "SubmitField") and (field.type != "CSRFTokenField") %}
                   <div class="form-group">
