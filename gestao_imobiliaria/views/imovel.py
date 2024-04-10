@@ -15,9 +15,9 @@ def imovel_list():
 
     dados = db.execute(
         """
-        SELECT imovel.id, endereco_logradouro, endereco_numero, endereco_complemento, 
-        endereco_bairro, endereco_cidade, endereco_estado, 
-        endereco_cep, alugado, locador.id||':'|| locador.primeiro_nome as id_locador
+        SELECT imovel.id, imovel.cep, imovel.logradouro, imovel.complemento, 
+        imovel.bairro, imovel.cidade, imovel.uf, 
+        imovel.alugado, locador.id||':'|| locador.primeiro_nome as id_locador
         FROM imovel
         INNER JOIN locador ON imovel.id_locador = locador.id;
         """

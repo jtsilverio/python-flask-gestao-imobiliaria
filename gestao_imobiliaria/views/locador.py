@@ -24,7 +24,7 @@ def locador_list():
 
     dados = db.execute(
         """
-        SELECT id, primeiro_nome, ultimo_nome, email, ddd, telefone, tipo_logradouro, endereco, numero, cep
+        SELECT *
         FROM locador;
         """
     ).fetchall()

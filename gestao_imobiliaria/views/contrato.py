@@ -18,7 +18,7 @@ def contrato_list():
         SELECT contrato.id, contrato.data_inicio, contrato.data_fim,
             contrato.valor_aluguel, contrato.IPTU, contrato.condominio,
             contrato.garantia, contrato.outras_despesas, contrato.porcentagem_comissao, 
-            imovel.id||':'|| imovel.endereco_logradouro as id_imovel, 
+            imovel.id||':'|| imovel.logradouro as id_imovel, 
             locatario.id||':'|| locatario.primeiro_nome as id_locatario
         FROM contrato 
         INNER JOIN imovel ON contrato.id_imovel = imovel.id
