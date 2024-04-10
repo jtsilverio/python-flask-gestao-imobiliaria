@@ -1,7 +1,6 @@
 from flask import (
     Blueprint,
     abort,
-    current_app,
     flash,
     redirect,
     render_template,
@@ -14,11 +13,12 @@ from gestao_imobiliaria.forms import LocadorForm
 from gestao_imobiliaria.views.utils import flash_errors, get_column_names
 
 locador = Blueprint("locador", __name__)
+PAGE_NAME = "locador"
 
 
 @locador.route("/locador/")
 def locador_list():
-    PAGE_TITLE = "locador"
+    PAGE_TITLE = PAGE_NAME
     db = get_db()
     colunas = get_column_names(db, table="locador")
 
@@ -37,7 +37,7 @@ def locador_list():
         dados=dados,
         colunas=colunas,
         page_title=PAGE_TITLE,
-        blueprint="locador",
+        blueprint=PAGE_NAME,
     )
 
 
@@ -137,7 +137,7 @@ def edit(id: int):
     return render_template("form.html", form=form, page_title="Editar Locador")
 
 
-@locador.route("/locador/delete/<int:id>", methods=["GET", "POST"])
+@locador.route("/locador/<int:id>/delete/", methods=["GET", "POST"])
 def delete(id: int):
     db = get_db()
     db.execute("DELETE FROM locador WHERE id = ?", (id,))

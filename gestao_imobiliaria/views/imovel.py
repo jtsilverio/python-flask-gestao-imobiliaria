@@ -1,11 +1,14 @@
-from flask import current_app, render_template
+from flask import Blueprint, render_template
 
 from gestao_imobiliaria.db import get_db
 from gestao_imobiliaria.views.utils import get_column_names
 
+imovel = Blueprint("imovel", __name__)
+PAGE_NAME = "imovel"
 
-@current_app.route("/imovel/")
-def imoveis_list():
+
+@imovel.route("/imovel/")
+def imovel_list():
     PAGE_TITLE = "imovel"
     db = get_db()
     colunas = get_column_names(db, table="imovel")
@@ -28,4 +31,20 @@ def imoveis_list():
         dados=dados,
         colunas=colunas,
         page_title=PAGE_TITLE,
+        blueprint=PAGE_NAME,
     )
+
+
+@imovel.route("/imovel/cadastro/")
+def cadastro():
+    pass
+
+
+@imovel.route("/imovel/<int:id>/")
+def edit(id):
+    pass
+
+
+@imovel.route("/imovel/<int:id>/delete/")
+def delete(id):
+    pass
