@@ -105,7 +105,8 @@ def edit(id: int):
         form.telefone.data = locador["telefone"]
         form.cep.data = locador["cep"]
         form.logradouro.data = locador["logradouro"]
-        form.complemento.data = locador["complemento"]  # Add this line
+        form.numero.data = locador["numero"]
+        form.complemento.data = locador["complemento"]
         form.bairro.data = locador["bairro"]
         form.cidade.data = locador["cidade"]
         form.uf.data = locador["uf"]
@@ -122,6 +123,8 @@ def edit(id: int):
                 telefone = ?,
                 cep = ?,
                 logradouro = ?,
+                logradouro = ?,
+                numero = ?,
                 complemento = ?,
                 bairro = ?,
                 cidade = ?,
@@ -137,6 +140,7 @@ def edit(id: int):
                 form.telefone.data,
                 form.cep.data,
                 form.logradouro.data,
+                form.numero.data,
                 form.complemento.data,
                 form.bairro.data,
                 form.cidade.data,
