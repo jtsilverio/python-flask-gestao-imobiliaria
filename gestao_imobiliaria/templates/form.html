@@ -32,14 +32,42 @@
     <form action="" method="POST" class="w-50">
         {{ form.csrf_token }}
         {{ form.hidden_tag() }}
-          {% for field in form %}
-              {% if (field.type != "SubmitField") and (field.type != "CSRFTokenField") %}
-                  <div class="form-group">
-                      {{ field.label(class="form-label mb-0 mt-2") }}
-                      {{ field(class="form-control", placeholder=field.label.text) }}
-                  </div>
-              {% endif %}
-          {% endfor %}
+
+        {% set row_open = false %}
+        {% for field in form %}
+            {% if (field.type != "SubmitField") and (field.type != "CSRFTokenField") %}
+                {% if field.label.text == "Logradouro"%}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.logradouro.label(class="form-label mb-0 mt-2") }}
+                                {{ form.logradouro(class="form-control", placeholder=form.logradouro.label.text) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.numero.label(class="form-label mb-0 mt-2") }}
+                                {{ form.numero(class="form-control", placeholder=form.numero.label.text) }}
+                            </div>
+                        </div>
+                    </div>
+                {% elif field.label.text == "Número" %}
+                {% elif field.label.text == "CEP" %}
+                    <div class="form-group">
+                    {{ field.label(class="form-label mb-0 mt-2") }}
+                    <div class="input-group mb-0">
+                        {{ field(class="form-control", placeholder=field.label.text, maxlength="9" )}}
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="pesquisacep(document.getElementById('cep').value);"><i class="bi bi-search"></i></button>
+                    </div>
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        {{ field.label(class="form-label mb-0 mt-2") }}
+                        {{ field(class="form-control", placeholder=field.label.text) }}
+                    </div>
+                {% endif %}                  
+            {% endif %}
+        {% endfor %}
 
           {% for error in form.errors %}
               <span class="form__error">{{ error }}</span>
@@ -50,7 +78,9 @@
           </div>
     </form>
   </div>
+
   <script>
+    //Alerts
     document.addEventListener('DOMContentLoaded', function () {
       var alertElList = [].slice.call(document.querySelectorAll('.alert'))
       alertElList.forEach(alert => {
@@ -60,24 +90,26 @@
         }, 5000); // hide after 5 seconds
       });
     });
-  </script>
 
-      <!-- Adicionando Javascript -->
-      <script>
-    
+    //disable field with id logradouro, numero, bairro, cidade and uf
+    document.getElementById('logradouro').readOnly = true;
+    document.getElementById('bairro').readOnly = true;
+    document.getElementById('cidade').readOnly = true;
+    document.getElementById('uf').readOnly = true;
+
+    // CEP
         function limpa_formulário_cep() {
                 //Limpa valores do formulário de cep.
-                document.getElementById('rua').value=("");
+                document.getElementById('logradouro').value=("");
                 document.getElementById('bairro').value=("");
                 document.getElementById('cidade').value=("");
                 document.getElementById('uf').value=("");
-                document.getElementById('ibge').value=("");
         }
     
         function meu_callback(conteudo) {
             if (!("erro" in conteudo)) {
                 //Atualiza os campos com os valores.
-                document.getElementById('rua').value=(conteudo.logradouro);
+                document.getElementById('logradouro').value=(conteudo.logradouro);
                 document.getElementById('bairro').value=(conteudo.bairro);
                 document.getElementById('cidade').value=(conteudo.localidade);
                 document.getElementById('uf').value=(conteudo.uf);
@@ -90,25 +122,22 @@
         }
             
         function pesquisacep(valor) {
-    
             //Nova variável "cep" somente com dígitos.
             var cep = valor.replace(/\D/g, '');
     
             //Verifica se campo cep possui valor informado.
             if (cep != "") {
-    
                 //Expressão regular para validar o CEP.
                 var validacep = /^[0-9]{8}$/;
     
                 //Valida o formato do CEP.
-                if(validacep.test(cep)) {
+                if(validacep.test(cep) && cep.length == 8) {
     
                     //Preenche os campos com "..." enquanto consulta webservice.
-                    document.getElementById('rua').value="...";
+                    document.getElementById('logradouro').value="...";
                     document.getElementById('bairro').value="...";
                     document.getElementById('cidade').value="...";
                     document.getElementById('uf').value="...";
-                    document.getElementById('ibge').value="...";
     
                     //Cria um elemento javascript.
                     var script = document.createElement('script');
@@ -131,6 +160,5 @@
                 limpa_formulário_cep();
             }
         };
-    
-        </script>
+  </script>
 {% endblock %}

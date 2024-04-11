@@ -10,26 +10,32 @@ from wtforms import (
 
 
 class LocatarioForm(FlaskForm):
+    cpf = StringField("CPF")
     primeiro_nome = StringField("Primeiro Nome")
     ultimo_nome = StringField("Sobrenome")
     email = StringField("CPF")
     ddd = IntegerField("DDD")
     telefone = StringField("Telefone")
-    tipo_logradouro = StringField("Tipo de Logradouro")
-    endereco = StringField("Endereço")
-    numero = IntegerField("Número")
     cep = StringField("CEP")
+    logradouro = StringField("Tipo de Logradouro")
+    numero = IntegerField("Número")
+    complemento = StringField("Complemento")
+    bairro = StringField("Bairro")
+    cidade = StringField("Cidade")
+    uf = StringField("UF")
+    submit = SubmitField("Salvar")
 
 
 class ImovelForm(FlaskForm):
-    endereco_logradouro = StringField("Endereço")
-    endereco_numero = StringField("Número")
-    endereco_complemento = StringField("Complemento")
-    endereco_bairro = StringField("Bairro")
-    endereco_cidade = StringField("Cidade")
-    endereco_estado = StringField("Estado")
-    endereco_cep = StringField("CEP")
+    cep = StringField("CEP")
+    logradouro = StringField("Logradouro")
+    numero = IntegerField("Número")
+    complemento = StringField("Complemento")
+    bairro = StringField("Bairro")
+    cidade = StringField("Cidade")
+    uf = StringField("UF")
     alugado = SelectField("Alugado")
+    locador = SelectField("Locador")
     submit = SubmitField("Salvar")
 
 
@@ -56,6 +62,7 @@ class LocadorForm(FlaskForm):
     telefone = StringField("Telefone")
     cep = StringField("CEP")
     logradouro = StringField("Logradouro")
+    numero = IntegerField("Número")
     complemento = StringField("Complemento")
     bairro = StringField("Bairro")
     cidade = StringField("Cidade")

@@ -25,7 +25,8 @@ def locador_list():
     dados = db.execute(
         """
         SELECT *
-        FROM locador;
+        FROM locador
+        ORDER BY id DESC;
         """
     ).fetchall()
 
@@ -49,12 +50,13 @@ def cadastro():
 
     if form.validate_on_submit():
         db = get_db()
+        print("####", form.logradouro)
         db.execute(
             """
             INSERT INTO locador (cpf, primeiro_nome, ultimo_nome, email,
                                 ddd, telefone, cep, 
-                                logradouro, complemento, bairro, cidade, uf) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                logradouro, numero, complemento, bairro, cidade, uf) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 form.cpf.data,
@@ -65,6 +67,7 @@ def cadastro():
                 form.telefone.data,
                 form.cep.data,
                 form.logradouro.data,
+                form.numero.data,
                 form.complemento.data,
                 form.bairro.data,
                 form.cidade.data,
