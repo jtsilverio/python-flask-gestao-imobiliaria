@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `imovel` (
 	`bairro` TEXT NOT NULL,
 	`cidade` INTEGER NOT NULL,
 	`uf` INTEGER NOT NULL,
-	`alugado` REAL NOT NULL,
+	`alugado` TEXT NOT NULL,
 	`id_locador` INTEGER NOT NULL,
 	FOREIGN KEY(`id_locador`) REFERENCES `locador`(`id`)
 );

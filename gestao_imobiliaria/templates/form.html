@@ -61,10 +61,17 @@
                     </div>
                     </div>
                 {% else %}
-                    <div class="form-group">
-                        {{ field.label(class="form-label mb-0 mt-2") }}
-                        {{ field(class="form-control", placeholder=field.label.text) }}
-                    </div>
+                    {% if field.type == 'SelectField' %}
+                        <div class="form-group">
+                            {{ field.label(class="form-label mb-0 mt-2") }}
+                            {{ field(class="form-select", placeholder=field.label.text) }}
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            {{ field.label(class="form-label mb-0 mt-2") }}
+                            {{ field(class="form-control", placeholder=field.label.text) }}
+                        </div>
+                    {% endif %}
                 {% endif %}                  
             {% endif %}
         {% endfor %}

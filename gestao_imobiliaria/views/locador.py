@@ -49,8 +49,6 @@ def cadastro():
     db = get_db()
 
     if form.validate_on_submit():
-        db = get_db()
-        print("####", form.logradouro)
         db.execute(
             """
             INSERT INTO locador (cpf, primeiro_nome, ultimo_nome, email,

@@ -7,6 +7,7 @@ from wtforms import (
     StringField,
     SubmitField,
 )
+from gestao_imobiliaria.db import get_db
 
 
 class LocatarioForm(FlaskForm):
@@ -27,6 +28,17 @@ class LocatarioForm(FlaskForm):
 
 
 class ImovelForm(FlaskForm):
+    def __init__(self, *args, **kwargs):
+        super(ImovelForm, self).__init__(*args, **kwargs)
+        self.populate_choices()
+
+    def populate_choices(self):
+        db = get_db()  # Get the database connection
+        cursor = db.cursor()
+        cursor.execute('SELECT id, primeiro_nome, ultimo_nome, cpf FROM locador')
+        rows = cursor.fetchall()
+        self.id_locador.choices = [(row['id'], f"{row['cpf']}: {row['primeiro_nome']} {row['ultimo_nome']}") for row in rows]
+    
     cep = StringField("CEP")
     logradouro = StringField("Logradouro")
     numero = IntegerField("Número")
@@ -34,8 +46,8 @@ class ImovelForm(FlaskForm):
     bairro = StringField("Bairro")
     cidade = StringField("Cidade")
     uf = StringField("UF")
-    alugado = SelectField("Alugado")
-    locador = SelectField("Locador")
+    alugado = SelectField("Alugado", choices=[("0", "Não"), ("1", "Sim")])
+    id_locador = SelectField("Locador")
     submit = SubmitField("Salvar")
 
 
