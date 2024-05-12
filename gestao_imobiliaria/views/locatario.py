@@ -42,15 +42,13 @@ def locatario_list():
     )
 
 
-@locatario.route("/locatario/cadastro/")
+@locatario.route("/locatario/cadastro/", methods=["GET", "POST"])
 def cadastro():
-    PAGE_TITLE = "cadastro locador"
+    PAGE_TITLE = "cadastro locatário"
     form = LocatarioForm()
     db = get_db()
 
     if form.validate_on_submit():
-        db = get_db()
-        print("####", form.logradouro)
         db.execute(
             """
             INSERT INTO locatario (cpf, primeiro_nome, ultimo_nome, email,
@@ -76,7 +74,7 @@ def cadastro():
         )
         db.commit()
         flash("Cadastro Realizado com Sucesso.", "success")
-        return redirect(url_for("locador.locador_list"))
+        return redirect(url_for("locatario.locatario_list"))
     else:
         flash_errors(form)
 

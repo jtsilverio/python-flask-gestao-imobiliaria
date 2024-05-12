@@ -3,6 +3,7 @@ import secrets
 
 import dotenv
 from flask import Flask
+from datetime import datetime
 
 dotenv.load_dotenv()
 os.environ["SECRET_KEY"] = secrets.token_urlsafe(16)
@@ -21,6 +22,8 @@ def create_app():
         SECRET_KEY=os.getenv("SECRET_KEY"),
         DATABASE=os.getenv("DATABASE"),
     )
+    app.jinja_env.globals.update(datetime=datetime)
+    
     with app.app_context():
         db.init_app(app)
 

@@ -8,6 +8,7 @@ from flask import (
     url_for,
 )
 
+from datetime import datetime
 from gestao_imobiliaria.db import get_db
 from gestao_imobiliaria.views.utils import get_column_names, flash_errors
 from gestao_imobiliaria.forms import ContratoForm
@@ -47,7 +48,7 @@ def contrato_list():
     )
 
 
-@contrato.route("/contrato/cadastro/")
+@contrato.route("/contrato/cadastro/", methods=["GET", "POST"])
 def cadastro():
     PAGE_TITLE = "Cadastro Contrato"
     form = ContratoForm()
@@ -74,7 +75,13 @@ def cadastro():
                 form.id_locatario.data,
             ),
         )
-        db.commit()
+        
+        db.execute(
+            'UPDATE imovel SET alugado = ? WHERE id = ?',
+            ("Sim", form.id_imovel.data)
+        )
+
+        db.commit()        
         flash("Cadastro Realizado com Sucesso.", "success")
         return redirect(url_for("contrato.contrato_list"))
     else:
@@ -90,15 +97,15 @@ def cadastro():
 @contrato.route("/contrato/<int:id>", methods=["GET", "POST"])
 def edit(id: int):
     db = get_db()
-    form = ContratoForm()
+    form = ContratoForm(edit=True)
 
     contrato = db.execute("SELECT * FROM contrato WHERE id = ?", (id,)).fetchone()
     if contrato is None:
         abort(404, "Contrato id {0} doesn't exist.".format(id))
 
     if request.method == "GET":
-        form.data_inicio.data = contrato["data_inicio"]
-        form.data_fim.data = contrato["data_fim"]
+        form.data_inicio.data = datetime.strptime(contrato["data_inicio"], '%Y-%m-%d')
+        form.data_fim.data = datetime.strptime(contrato["data_fim"], '%Y-%m-%d')
         form.valor_aluguel.data = contrato["valor_aluguel"]
         form.IPTU.data = contrato["IPTU"]
         form.condominio.data = contrato["condominio"]
@@ -149,6 +156,10 @@ def edit(id: int):
 def delete(id: int):
     db = get_db()
     db.execute("DELETE FROM contrato WHERE id = ?", (id,))
+    db.execute(
+        'UPDATE imovel SET alugado = ? WHERE id = (SELECT id_imovel FROM contrato WHERE id = ?)',
+        ("Não", id)
+    )
     db.commit()
     flash("Contrato deletado com sucesso.", "success")
     return redirect(url_for("contrato.contrato_list"))
