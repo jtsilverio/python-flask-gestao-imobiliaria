@@ -7,6 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /code
 WORKDIR /code
+COPY database/db.sqlite3 /code/database/db.sqlite3
 
 COPY requirements.txt /tmp/requirements.txt
 RUN set -ex && \
