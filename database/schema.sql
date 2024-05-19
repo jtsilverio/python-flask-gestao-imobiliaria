@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS `imovel` (
 
 CREATE TABLE IF NOT EXISTS `contrato` (
 	`id` integer primary key NOT NULL UNIQUE,
-	`data_inicio` REAL NOT NULL,
-	`data_fim` REAL NOT NULL,
+	`data_inicio` DATE NOT NULL,
+	`data_fim` DATE NOT NULL,
 	`valor_aluguel` REAL NOT NULL,
 	`IPTU` REAL NOT NULL,
 	`condominio` REAL DEFAULT 0,

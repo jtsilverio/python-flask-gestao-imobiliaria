@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set current_date = datetime.utcnow() %}
+{% set current_date = date.today() %}
 
 {% block title %}
   {{page_title.capitalize()}}
@@ -46,8 +46,7 @@
       <tbody>
         {% for dado in dados %}
           {% if page_title == 'contrato' %}
-            {% set data_fim = datetime.strptime(dado.data_fim, '%Y-%m-%d') %}  <!-- Convert string to datetime -->
-            {% if data_fim < current_date %}
+            {% if dado.data_fim < current_date %}
               <tr class="table-danger">
             {% endif %}
           {% else %}
