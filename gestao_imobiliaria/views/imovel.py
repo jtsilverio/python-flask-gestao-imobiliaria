@@ -1,12 +1,4 @@
-from flask import (
-    Blueprint,
-    abort,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 
 from gestao_imobiliaria.db import get_db
 from gestao_imobiliaria.forms import ImovelForm
@@ -28,7 +20,8 @@ def imovel_list():
         imovel.bairro, imovel.cidade, imovel.uf, 
         imovel.alugado, locador.id||':'|| locador.primeiro_nome as id_locador
         FROM imovel
-        INNER JOIN locador ON imovel.id_locador = locador.id;
+        INNER JOIN locador ON imovel.id_locador = locador.id
+        ORDER BY imovel.id DESC;
         """
     ).fetchall()
 
@@ -42,6 +35,7 @@ def imovel_list():
         page_title=PAGE_TITLE,
         blueprint=PAGE_NAME,
     )
+
 
 @imovel.route("/imovel/cadastro/", methods=["GET", "POST"])
 def cadastro():
@@ -122,7 +116,8 @@ def edit(id: int):
                 alugado = ?,
                 id_locador = ?
             WHERE id = ?
-            """,(
+            """,
+            (
                 form.cep.data,
                 form.logradouro.data,
                 form.numero.data,
@@ -133,7 +128,7 @@ def edit(id: int):
                 form.alugado.data,
                 form.id_locador.data,
                 id,
-            )
+            ),
         )
         db.commit()
         flash("Cadastro Atualizado com Sucesso.", "success")

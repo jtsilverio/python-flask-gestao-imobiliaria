@@ -7,7 +7,7 @@
 
 
 {% block content %}
-  <div class="container justify-content-left w-100 position-relative">
+  <div class="container-fluid justify-content-left position-relative">
 
     <div class="container-buttons text-start mb-3">
       <a href={{ url_for(blueprint +'.cadastro') }}
@@ -33,7 +33,6 @@
       {% endfor %}
     {% endif %}
     {% endwith %}
-
     <table class="table table-hover">
       <thead>
         <tr>
@@ -53,9 +52,9 @@
           <tr>
           {% endif %}
             {% for value in dado %}
-              <td>{{ value }}</td>
+              <td class="small">{{ value }}</td>
             {% endfor %}
-            <td class="text-center">
+            <td class="text-center small">
               <a href="{{ url_for(blueprint +'.edit', id=dado.id) }}"><i class="bi bi-pencil-square"></i></a>
               <a href="{{ url_for(blueprint + '.delete', id=dado.id) }}"><i class="bi bi-trash text-danger"></i></a>
             </td>

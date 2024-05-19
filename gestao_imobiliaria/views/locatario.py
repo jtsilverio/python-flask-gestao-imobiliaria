@@ -1,12 +1,4 @@
-from flask import (
-    Blueprint,
-    abort,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 
 from gestao_imobiliaria.db import get_db
 from gestao_imobiliaria.views.utils import get_column_names
@@ -14,6 +6,7 @@ from gestao_imobiliaria.views.utils import get_column_names
 locatario = Blueprint("locatario", __name__)
 from gestao_imobiliaria.forms import LocatarioForm
 from gestao_imobiliaria.views.utils import flash_errors, get_column_names
+
 PAGE_NAME = "locatario"
 
 
@@ -26,7 +19,8 @@ def locatario_list():
     dados = db.execute(
         """
         SELECT *
-        FROM locatario;
+        FROM locatario
+        ORDER BY id DESC;
         """
     ).fetchall()
 

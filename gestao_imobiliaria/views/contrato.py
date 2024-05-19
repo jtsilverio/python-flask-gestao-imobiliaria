@@ -1,17 +1,10 @@
-from flask import (
-    Blueprint,
-    abort,
-    flash,
-    redirect,
-    render_template,
-    request,
-    url_for,
-)
-
 from datetime import datetime
+
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+
 from gestao_imobiliaria.db import get_db
-from gestao_imobiliaria.views.utils import get_column_names, flash_errors
 from gestao_imobiliaria.forms import ContratoForm
+from gestao_imobiliaria.views.utils import flash_errors, get_column_names
 
 contrato = Blueprint("contrato", __name__)
 PAGE_NAME = "contrato"
@@ -21,7 +14,20 @@ PAGE_NAME = "contrato"
 def contrato_list():
     PAGE_TITLE = PAGE_NAME
     db = get_db()
-    colunas = get_column_names(db, table="contrato")
+    # colunas = get_column_names(db, table="contrato")
+    colunas = [
+        "ID",
+        "DATA INICIO",
+        "DATA FIM",
+        "VALOR ALUGUEL",
+        "IPTU",
+        "CONDOMINIO",
+        "GARANTIA",
+        "OUTRAS DESPESAS",
+        "PORCENTAGEM COMISSAO",
+        "IMOVEL",
+        "LOCATARIO",
+    ]
 
     dados = db.execute(
         """
@@ -33,6 +39,7 @@ def contrato_list():
         FROM contrato 
         INNER JOIN imovel ON contrato.id_imovel = imovel.id
         INNER JOIN locatario ON contrato.id_locatario = locatario.id
+        ORDER BY contrato.id DESC;
         """
     ).fetchall()
 
@@ -75,13 +82,12 @@ def cadastro():
                 form.id_locatario.data,
             ),
         )
-        
+
         db.execute(
-            'UPDATE imovel SET alugado = ? WHERE id = ?',
-            ("Sim", form.id_imovel.data)
+            "UPDATE imovel SET alugado = ? WHERE id = ?", ("Sim", form.id_imovel.data)
         )
 
-        db.commit()        
+        db.commit()
         flash("Cadastro Realizado com Sucesso.", "success")
         return redirect(url_for("contrato.contrato_list"))
     else:
@@ -104,8 +110,8 @@ def edit(id: int):
         abort(404, "Contrato id {0} doesn't exist.".format(id))
 
     if request.method == "GET":
-        form.data_inicio.data = datetime.strptime(contrato["data_inicio"], '%Y-%m-%d')
-        form.data_fim.data = datetime.strptime(contrato["data_fim"], '%Y-%m-%d')
+        form.data_inicio.data = datetime.strptime(contrato["data_inicio"], "%Y-%m-%d")
+        form.data_fim.data = datetime.strptime(contrato["data_fim"], "%Y-%m-%d")
         form.valor_aluguel.data = contrato["valor_aluguel"]
         form.IPTU.data = contrato["IPTU"]
         form.condominio.data = contrato["condominio"]
@@ -157,8 +163,8 @@ def delete(id: int):
     db = get_db()
     db.execute("DELETE FROM contrato WHERE id = ?", (id,))
     db.execute(
-        'UPDATE imovel SET alugado = ? WHERE id = (SELECT id_imovel FROM contrato WHERE id = ?)',
-        ("Não", id)
+        "UPDATE imovel SET alugado = ? WHERE id = (SELECT id_imovel FROM contrato WHERE id = ?)",
+        ("Não", id),
     )
     db.commit()
     flash("Contrato deletado com sucesso.", "success")
